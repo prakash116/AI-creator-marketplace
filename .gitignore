@@ -4,3 +4,6 @@ dist
 .env
 .env*.local
 *.log
+
+# Render "Add from .env" files (contain secrets)
+render-*.env
