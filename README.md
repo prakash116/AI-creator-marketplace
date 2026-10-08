@@ -49,30 +49,29 @@ Demo logins (password `password123`): `brand@cre8r.dev`, `creator@cre8r.dev`.
 
 ## Production deployment (Render, one repo)
 
- defines two web services that deploy from this repo:
+`render.yaml` defines two web services that deploy from this repo:
 
 | Service | Root directory | Build | Start |
 | --- | --- | --- | --- |
-|  |  |  |  (health check ) |
-|  |  |  | Unknown command: "start"
-
-
-Did you mean one of these?
-  npm star # Mark your favorite packages
-  npm stars # View packages marked as favorites
-  npm start # Start a package
-To see a list of supported npm commands, run:
-  npm help |
+| `cre8r-api` | `Backend` | `npm ci && npm run build` | `node dist/main.js` (health check `/api/health`) |
+| `cre8r-web` | `Frontend` | `npm ci && npm run build` | `npm start` |
 
 Steps:
 1. Render dashboard → **New → Blueprint** → choose this repo → **Apply**.
-2. When asked, fill in the secret values for : , , , . Render generates  for you.
-3. In MongoDB Atlas → **Network Access**, allow . Render's free plan has no fixed IP addresses.
-4. The blueprint assumes these URLs:  and . If Render gives either service a different URL, update both of these and redeploy:
-   -  on    -  on 
-In production the API refuses to start if  is weak or if  or  is missing. CORS only allows .
+2. When asked, fill in the secret values for `cre8r-api`: `MONGODB_URI`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`. Render generates `JWT_SECRET` for you.
+3. In MongoDB Atlas → **Network Access**, allow `0.0.0.0/0`. Render's free plan has no fixed IP addresses.
+4. The blueprint assumes these URLs: `https://cre8r-api.onrender.com` and `https://cre8r-web.onrender.com`. If Render gives either service a different URL, update both of these and redeploy:
+   - `NEXT_PUBLIC_API_URL` on `cre8r-web`
+   - `FRONTEND_URL` on `cre8r-api`
 
-Docker alternative: 
+In production the API refuses to start if `JWT_SECRET` is weak or if `MONGODB_URI` or `FRONTEND_URL` is missing. CORS only allows `FRONTEND_URL`.
+
+Docker alternative:
+
+```bash
+PUBLIC_API_URL=http://localhost:4000/api docker compose --env-file Backend/.env up --build
+```
+
 ## Demo flow
 
 Landing → **Explore Creators** → search "AI Filmmaker" → add the **Runway** filter → open **Aarav Mehta** → portfolio, tools, verification → **Invite to Brief** → fill in the form → **Publish Brief** → "Your brief is live." → **View on Briefs** (the new brief is listed first and highlighted).
