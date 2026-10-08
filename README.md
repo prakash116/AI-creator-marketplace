@@ -47,31 +47,32 @@ Demo logins (password `password123`): `brand@cre8r.dev`, `creator@cre8r.dev`.
 | --- | --- |
 | `NEXT_PUBLIC_API_URL` | Default `http://localhost:4000/api` |
 
-## Production deployment
+## Production deployment (Render, one repo)
 
-### Backend: Render (`render.yaml`), Railway, or Docker (`Backend/Dockerfile`)
-- **Root directory:** `Backend`
-- **Build command:** `npm ci && npm run build`
-- **Start command:** `node dist/main.js`
-- **Health check:** `/api/health`
-- **Required env:**
-  - `NODE_ENV=production`
-  - `MONGODB_URI`
-  - `JWT_SECRET`: at least 32 random characters. Generate one with `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`.
-  - `FRONTEND_URL`: your frontend URL, e.g. `https://cre8r.vercel.app`. Separate multiple URLs with commas.
-  - `CLOUDINARY_*`
-- In production the API refuses to start if `JWT_SECRET` is weak or if `MONGODB_URI` or `FRONTEND_URL` is missing.
-- CORS only allows the URLs in `FRONTEND_URL`. Helmet security headers, gzip and `trust proxy` are enabled.
+ defines two web services that deploy from this repo:
 
-### Frontend: Vercel, or Docker (`Frontend/Dockerfile`, standalone output)
-- **Root directory:** `Frontend`. Vercel's default Next.js settings work as-is.
-- **Env:** `NEXT_PUBLIC_API_URL=https://<your-api-host>/api`. The value is baked in at build time, so redeploy after changing it.
+| Service | Root directory | Build | Start |
+| --- | --- | --- | --- |
+|  |  |  |  (health check ) |
+|  |  |  | Unknown command: "start"
 
-### Docker (both)
-```bash
-PUBLIC_API_URL=http://localhost:4000/api docker compose --env-file Backend/.env up --build
-```
 
+Did you mean one of these?
+  npm star # Mark your favorite packages
+  npm stars # View packages marked as favorites
+  npm start # Start a package
+To see a list of supported npm commands, run:
+  npm help |
+
+Steps:
+1. Render dashboard → **New → Blueprint** → choose this repo → **Apply**.
+2. When asked, fill in the secret values for : , , , . Render generates  for you.
+3. In MongoDB Atlas → **Network Access**, allow . Render's free plan has no fixed IP addresses.
+4. The blueprint assumes these URLs:  and . If Render gives either service a different URL, update both of these and redeploy:
+   -  on    -  on 
+In production the API refuses to start if  is weak or if  or  is missing. CORS only allows .
+
+Docker alternative: 
 ## Demo flow
 
 Landing → **Explore Creators** → search "AI Filmmaker" → add the **Runway** filter → open **Aarav Mehta** → portfolio, tools, verification → **Invite to Brief** → fill in the form → **Publish Brief** → "Your brief is live." → **View on Briefs** (the new brief is listed first and highlighted).
