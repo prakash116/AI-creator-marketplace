@@ -9,8 +9,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  // Self-contained server bundle for Docker (ignored by Vercel).
-  output: 'standalone',
+  // Self-contained server bundle for Docker only; Render/Vercel use `next start`.
+  output: process.env.NEXT_STANDALONE === '1' ? 'standalone' : undefined,
   poweredByHeader: false,
   reactStrictMode: true,
   images: {
