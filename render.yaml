@@ -1,0 +1,55 @@
+# Render Blueprint — deploys both apps from this one repo.
+# Render dashboard → New → Blueprint → select this repo.
+# If Render assigns different URLs than below (name taken), update
+# NEXT_PUBLIC_API_URL (then redeploy web) and FRONTEND_URL (then redeploy api).
+services:
+  # ---------- Backend: NestJS API ----------
+  - type: web
+    name: cre8r-api
+    runtime: node
+    rootDir: Backend
+    plan: free
+    region: singapore
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/main.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        value: https://cre8r-web.onrender.com
+      - key: MONGODB_URI
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+
+  # ---------- Frontend: Next.js ----------
+  - type: web
+    name: cre8r-web
+    runtime: node
+    rootDir: Frontend
+    plan: free
+    region: singapore
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      # Inlined at build time — redeploy the web service after changing it.
+      - key: NEXT_PUBLIC_API_URL
+        value: https://cre8r-api.onrender.com/api

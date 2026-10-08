@@ -1,0 +1,43 @@
+{
+  "name": "cre8r-backend",
+  "version": "0.1.0",
+  "description": "CRE8R AI creator marketplace API (NestJS)",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "start:prod": "node dist/main.js",
+    "seed": "node dist/seed/seed.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.2.7",
+    "@nestjs/config": "^4.0.4",
+    "@nestjs/core": "^11.2.7",
+    "@nestjs/jwt": "^11.0.2",
+    "@nestjs/mapped-types": "^2.1.1",
+    "@nestjs/mongoose": "^11.0.4",
+    "@nestjs/platform-express": "^11.2.7",
+    "bcryptjs": "^3.0.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "cloudinary": "^2.11.0",
+    "compression": "^1.8.2",
+    "helmet": "^8.3.0",
+    "mongoose": "^8.24.5",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.24",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/compression": "^1.8.1",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.20.5",
+    "typescript": "~5.9"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

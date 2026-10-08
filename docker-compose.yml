@@ -1,0 +1,23 @@
+# Production-style local stack:  docker compose --env-file Backend/.env up --build
+services:
+  api:
+    build: ./Backend
+    env_file: ./Backend/.env
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./Frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:4000/api}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    restart: unless-stopped
